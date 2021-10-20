@@ -24,9 +24,16 @@ def parse(content):
         length = len(data)
         for j, td in enumerate(data):
             if j < length - 1 and j % 2 == 0:
-                print(f"{td.text} {data[j + 1].text}")
-        print("------------")
+                date = td.text
+                value = float(data[j + 1].text.replace(",", "."))
+                items.append({"date": date, "value": value})
+    return items
+
+def send(items):
+    url = "http://localhost:3000/cdi/insert"
+    response = requests.post(url, json=items)
+    print(response.status_code);
 
 content = request_html()
-parse(content)
-#print(values)
+items = parse(content);
+send(items)
